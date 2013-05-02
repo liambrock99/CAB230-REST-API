@@ -34,11 +34,11 @@
         "tags": ["Authentication"],
         "description": "Register",
         "operationID": "post_register",
-        "produces": "application/json",
+        "produces": "x-www-form-urlencoded",
         "requestBody": {
           "required": "true",
           "content": {
-            "application/json": {
+            "x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
                 "properties": {

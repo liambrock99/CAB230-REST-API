@@ -1,15 +1,18 @@
 var express = require("express");
 var router = express.Router();
+const bodyParser = require('body-parser');
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 /* GET home page. */
 router.get("/", function(req, res, next) {
   res.render("index", { title: "Queensland Crime Statistics API" });
 });
 
-/* GET API */
-// router.get("/api", (req, res, next) => {
-//   res.render("index", { title: "API Routes" });
-// });
+/* POST register */
+router.get("/register", urlencodedParser, (req, res, next) => {
+  res.send(req.body.email);
+  res.send(req.body.password);
+})
 
 /* GET offences */
 router.get("/offences", (req, res, next) => {
