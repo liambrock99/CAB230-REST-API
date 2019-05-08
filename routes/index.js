@@ -1,13 +1,10 @@
 var express = require("express");
 var router = express.Router();
-const mysql = require('mysql');
 
 /* GET home page. */
 router.get("/", function(req, res, next) {
   res.render("index", { title: "Queensland Crime Statistics API" });
 });
-
-module.exports = router;
 
 /* GET API */
 router.get("/api", (req, res, next) => {
@@ -16,90 +13,92 @@ router.get("/api", (req, res, next) => {
 
 /* GET offences */
 router.get("/api/offences", (req, res, next) => {
-  let query = "SELECT pretty FROM ??";
-  const table = ["offence_columns"];
-  query = mysql.format(query, table);
-
-  req.db.query(query, (err, rows) => {
-    if (err) {
-      res.json({"Error": true, "Message": "Error executing MySQL query"})
-    } else {
-      res.json({"Error": false, "Message":  "Success", "Offences": rows})
-    }
-  })
+  req.db
+    .from("offence_columns")
+    .select("pretty")
+    .then(rows => {
+      console.log(rows);
+      res.json({ offences: rows.map(e => e.pretty) });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ Error: true, Message: "Error in mySQL query" });
+    });
 });
 
 /* GET areas */
 router.get("/api/areas", (req, res, next) => {
-  let query = "SELECT area FROM ??";
-  const table = ["areas"];
-  query = mysql.format(query, table);
-
-  req.db.query(query, (err, rows) => {
-    if (err) {
-      res.json({"Error": true, "Message": "Error executing MySQL query"})
-    } else {
-      res.json({"Error": false, "Message":  "Success", "Areas": rows})
-    }
-  })
+  req.db
+    .from("areas")
+    .select("area")
+    .then(rows => {
+      res.json({ areas: rows.map(e => e.area) });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ Error: true, Message: "Error in mySQL query" });
+    });
 });
 
 /* GET ages */
 router.get("/api/ages", (req, res, next) => {
-  let query = "SELECT DISTINCT age FROM ??";
-  const table = ["offences"];
-  query = mysql.format(query, table);
-
-  req.db.query(query, (err, rows) => {
-    if (err) {
-      res.json({"Error": true, "Message": "Error executing MySQL query"})
-    } else {
-      res.json({"Error": false, "Message":  "Success", "Ages": rows})
-    }
-  })
+  req.db
+    .from("offences")
+    .distinct("age")
+    .then(rows => {
+      res.json({ ages: rows.map(e => e.age) });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ Error: true, Message: "Error in mySQL query" });
+    });
 });
 
 /* GET genders */
 router.get("/api/genders", (req, res, next) => {
-  let query = "SELECT DISTINCT gender FROM ??";
-  const table = ["offences"];
-  query = mysql.format(query, table);
-
-  req.db.query(query, (err, rows) => {
-    if (err) {
-      res.json({"Error": true, "Message": "Error executing MySQL query"})
-    } else {
-      res.json({"Error": false, "Message":  "Success", "Genders": rows})
-    }
-  })
+  req.db
+    .from("offences")
+    .distinct("gender")
+    .then(rows => {
+      res.json({ genders: rows.map(e => e.gender) });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ Error: true, Message: "Error in mySQL query" });
+    });
 });
 
 /* GET years */
 router.get("/api/years", (req, res, next) => {
-  let query = "SELECT DISTINCT year FROM ??";
-  const table = ["offences"];
-  query = mysql.format(query, table);
-
-  req.db.query(query, (err, rows) => {
-    if (err) {
-      res.json({"Error": true, "Message": "Error executing MySQL query"})
-    } else {
-      res.json({"Error": false, "Message":  "Success", "Years": rows})
-    }
-  })
+  req.db
+    .from("offences")
+    .distinct("year")
+    .then(rows => {
+      res.json({ years: rows.map(e => e.year) });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ Error: true, Message: "Error in mySQL query" });
+    });
 });
 
 /* GET months */
 router.get("/api/months", (req, res, next) => {
-  let query = "SELECT DISTINCT month FROM ??";
-  const table = ["offences"];
-  query = mysql.format(query, table);
-
-  req.db.query(query, (err, rows) => {
-    if (err) {
-      res.json({"Error": true, "Message": "Error executing MySQL query"})
-    } else {
-      res.json({"Error": false, "Message":  "Success", "Months": rows})
-    }
-  })
+  req.db
+    .from("offences")
+    .distinct("month")
+    .then(rows => {
+      res.json({ months: rows.map(e => e.month) });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ Error: true, Message: "Error in mySQL query" });
+    });
 });
+
+module.exports = router;
+
+/* POST register */
+router.post("/register", (req, res, next) => {
+  
+})
