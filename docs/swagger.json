@@ -1,0 +1,220 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CAB230: Web Computing API",
+    "description": "Express API based on the CAB230 Web Computing API.",
+    "version": "1.0.0",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": { "email": "liam.brock99@gmail.com" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Authentication"
+    },
+    {
+      "name": "Search"
+    },
+    {
+      "name": "Helpers"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Register",
+        "operationID": "post_register",
+        "produces": "application/json",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Login",
+        "operationID": "post_login",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "tags": ["Search"],
+        "description": "Login",
+        "operationID": "get_search",
+        "produces": "application/json",
+        "parameters": {
+          "in": "query",
+          "name": "offence",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/offences": {
+      "get": {
+        "tags": ["Helpers"],
+        "description": "Full listing of offences",
+        "operationId": "get_offences",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "offences": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/areas": {
+      "get": {
+        "tags": ["Helpers"],
+        "description": "Full listing of areas",
+        "operationId": "get_areas",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "areas": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ages": {
+      "get": {
+        "tags": ["Helpers"],
+        "description": "Full listing of ages",
+        "operationId": "get_ages",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ages": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/genders": {
+      "get": {
+        "tags": ["Helpers"],
+        "description": "Full listing of genders",
+        "operationId": "get_genders",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "genders": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/years/": {
+      "get": {
+        "tags": ["Helpers"],
+        "description": "Full listing of years",
+        "operationId": "get_years",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "years": {
+                  "type": "array"
+                }
+              },
+              "example": {
+                "years": [2001, 2002, 2003, 2004]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/months": {
+      "get": {
+        "tags": ["Helpers"],
+        "description": "Full listing of months",
+        "operationId": "get_months",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "months": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

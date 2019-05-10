@@ -7,17 +7,16 @@ router.get("/", function(req, res, next) {
 });
 
 /* GET API */
-router.get("/api", (req, res, next) => {
-  res.render("index", { title: "API Routes" });
-});
+// router.get("/api", (req, res, next) => {
+//   res.render("index", { title: "API Routes" });
+// });
 
 /* GET offences */
-router.get("/api/offences", (req, res, next) => {
+router.get("/offences", (req, res, next) => {
   req.db
     .from("offence_columns")
     .select("pretty")
     .then(rows => {
-      console.log(rows);
       res.json({ offences: rows.map(e => e.pretty) });
     })
     .catch(err => {
@@ -27,7 +26,7 @@ router.get("/api/offences", (req, res, next) => {
 });
 
 /* GET areas */
-router.get("/api/areas", (req, res, next) => {
+router.get("/areas", (req, res, next) => {
   req.db
     .from("areas")
     .select("area")
@@ -41,7 +40,7 @@ router.get("/api/areas", (req, res, next) => {
 });
 
 /* GET ages */
-router.get("/api/ages", (req, res, next) => {
+router.get("/ages", (req, res, next) => {
   req.db
     .from("offences")
     .distinct("age")
@@ -55,7 +54,7 @@ router.get("/api/ages", (req, res, next) => {
 });
 
 /* GET genders */
-router.get("/api/genders", (req, res, next) => {
+router.get("/genders", (req, res, next) => {
   req.db
     .from("offences")
     .distinct("gender")
@@ -69,7 +68,7 @@ router.get("/api/genders", (req, res, next) => {
 });
 
 /* GET years */
-router.get("/api/years", (req, res, next) => {
+router.get("/years", (req, res, next) => {
   req.db
     .from("offences")
     .distinct("year")
@@ -83,7 +82,7 @@ router.get("/api/years", (req, res, next) => {
 });
 
 /* GET months */
-router.get("/api/months", (req, res, next) => {
+router.get("/months", (req, res, next) => {
   req.db
     .from("offences")
     .distinct("month")
