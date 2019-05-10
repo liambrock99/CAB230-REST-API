@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "CAB230: Web Computing API",
-    "description": "Express API based on the CAB230 Web Computing API.",
+    "description": "Express API based on the CAB230 Web Computing API by Liam Brock.",
     "version": "1.0.0",
     "termsOfService": "http://swagger.io/terms/",
     "contact": { "email": "liam.brock99@gmail.com" },
@@ -51,6 +51,24 @@
         "description": "Login",
         "operationID": "post_login",
         "produces": ["application/json"],
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "username": "string",
+                  "password": "string"
+                }
+              },
+              "example": {
+                "username": "user@email.com",
+                "password": "password123"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -67,16 +85,108 @@
         "description": "Login",
         "operationID": "get_search",
         "produces": "application/json",
-        "parameters": {
-          "in": "query",
-          "name": "offence",
-          "schema": {
-            "type": "integer"
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offence",
+            "description": "The offence to search for",
+            "schema": {
+              "type": "string"
+            },
+            "required": "true"
+          },
+          {
+            "in": "query",
+            "name": "area",
+            "description": "List of comma seperated areas to filter search results by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "age",
+            "description": "List of comma seperated ages to filter search results by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "gender",
+            "description": "List of comma seperated genders to filter search results by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "description": "List of comma seperated years to filter search results by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "description": "List of comma seperated genders to filter search results by",
+            "schema": {
+              "type": "string"
+            }
           }
-        },
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "object",
+                      "properties": {
+                        "offence": {
+                          "type": "string"
+                        }
+                      },
+                      "example": {
+                        "offence": "Homicide (Murder)"
+                      }
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "LGA": {
+                            "type": "string"
+                          },
+                          "total": {
+                            "type": "integer"
+                          },
+                          "lat": {
+                            "type": "number"
+                          },
+                          "lng": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "example": [
+                        {
+                          "LGA": "Aurukun Shire Council",
+                          "total": 4,
+                          "lat": -27.470812,
+                          "lng": 153.022455
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -96,11 +206,24 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "offences": {
-                  "type": "array"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "offences": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "Assault",
+                        "Armed Robbery",
+                        "Advertising Prostitution"
+                      ],
+                      "description": "List of offences to search by"
+                    }
+                  }
                 }
               }
             }
@@ -117,11 +240,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "areas": {
-                  "type": "array"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "areas": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "Brisbane City Council",
+                        "Gold Coast City Council"
+                      ],
+                      "description": "List of areas to filter by"
+                    }
+                  }
                 }
               }
             }
@@ -138,11 +273,20 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ages": {
-                  "type": "array"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ages": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["Adult", "Juvenile"],
+                      "description": "List of ages to filter by"
+                    }
+                  }
                 }
               }
             }
@@ -159,11 +303,20 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "genders": {
-                  "type": "array"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "genders": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["Male", "Female", "Not stated"],
+                      "description": "List of genders to filter by"
+                    }
+                  }
                 }
               }
             }
@@ -180,15 +333,21 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "years": {
-                  "type": "array"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "years": {
+                      "years": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "example": [2001, 2002, 2003, 2004],
+                      "description": "List of years to filter by"
+                    }
+                  }
                 }
-              },
-              "example": {
-                "years": [2001, 2002, 2003, 2004]
               }
             }
           }
@@ -204,11 +363,20 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "months": {
-                  "type": "array"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "months": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "example": [1, 2, 3, 4],
+                      "description": "List of months to filter by"
+                    }
+                  }
                 }
               }
             }
