@@ -35,12 +35,60 @@
         "description": "Register",
         "operationID": "post_register",
         "produces": "application/json",
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "user@email.com",
+                    "required": "true"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123",
+                    "required": "true"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "yay! you've successfully registered your user account :)"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "oops! it looks like that user already exists :("
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -56,25 +104,63 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "username": "string",
-                  "password": "string"
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "user@email.com",
+                    "required": "true"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123",
+                    "required": "true"
+                  }
                 }
-              },
-              "example": {
-                "username": "user@email.com",
-                "password": "password123"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1Nzg2LCJlbWFpbCI6ImRlbW8xMjM0QGdtYWlsLmNvbSJ9LCJpYXQiOjE1NTUzMjQ2MDIsImV4cCI6MTU1NTQxMTAwMn0.mo85iKuAQ_h8n8-6pkeNNs5CCnV0G8hScxhi_ml_Q6c"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "example": "Bearer"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "example": "86400"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "invalid login - bad password"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -148,11 +234,9 @@
                       "type": "object",
                       "properties": {
                         "offence": {
-                          "type": "string"
+                          "type": "string",
+                          "example": "Homicide (Murder)"
                         }
-                      },
-                      "example": {
-                        "offence": "Homicide (Murder)"
                       }
                     },
                     "result": {
@@ -161,27 +245,23 @@
                         "type": "object",
                         "properties": {
                           "LGA": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Aurukun Shire Council"
                           },
                           "total": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": "4"
                           },
                           "lat": {
-                            "type": "number"
+                            "type": "number",
+                            "example": "-27.470812"
                           },
                           "lng": {
-                            "type": "number"
+                            "type": "number",
+                            "example": "153.022455"
                           }
                         }
-                      },
-                      "example": [
-                        {
-                          "LGA": "Aurukun Shire Council",
-                          "total": 4,
-                          "lat": -27.470812,
-                          "lng": 153.022455
-                        }
-                      ]
+                      }
                     }
                   }
                 }
@@ -189,10 +269,42 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "oops! it looks like you're missing the offence query param"
+                    }
+                  },
+                  "example": {
+                    "message": "oops! it looks like you're missing the offence query param"
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "oh no! it looks like your authorization token is invalid..."
+                    }
+                  },
+                  "example": {
+                    "message": "oh no! it looks like your authorization token is invalid..."
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -213,15 +325,14 @@
                   "properties": {
                     "offences": {
                       "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
                       "example": [
                         "Assault",
                         "Armed Robbery",
                         "Advertising Prostitution"
                       ],
-                      "description": "List of offences to search by"
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -247,14 +358,13 @@
                   "properties": {
                     "areas": {
                       "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
                       "example": [
                         "Brisbane City Council",
                         "Gold Coast City Council"
                       ],
-                      "description": "List of areas to filter by"
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -280,11 +390,10 @@
                   "properties": {
                     "ages": {
                       "type": "array",
+                      "example": ["Adult", "Juvenile"],
                       "items": {
                         "type": "string"
-                      },
-                      "example": ["Adult", "Juvenile"],
-                      "description": "List of ages to filter by"
+                      }
                     }
                   }
                 }
@@ -310,11 +419,10 @@
                   "properties": {
                     "genders": {
                       "type": "array",
+                      "example": ["Male", "Female", "Not stated"],
                       "items": {
                         "type": "string"
-                      },
-                      "example": ["Male", "Female", "Not stated"],
-                      "description": "List of genders to filter by"
+                      }
                     }
                   }
                 }
@@ -324,7 +432,7 @@
         }
       }
     },
-    "/years/": {
+    "/years": {
       "get": {
         "tags": ["Helpers"],
         "description": "Full listing of years",
@@ -339,12 +447,11 @@
                   "type": "object",
                   "properties": {
                     "years": {
-                      "years": "array",
+                      "type": "array",
+                      "example": [2001, 2002, 2003, 2004],
                       "items": {
                         "type": "integer"
-                      },
-                      "example": [2001, 2002, 2003, 2004],
-                      "description": "List of years to filter by"
+                      }
                     }
                   }
                 }
@@ -370,11 +477,10 @@
                   "properties": {
                     "months": {
                       "type": "array",
+                      "example": [1, 2, 3, 4],
                       "items": {
                         "type": "integer"
-                      },
-                      "example": [1, 2, 3, 4],
-                      "description": "List of months to filter by"
+                      }
                     }
                   }
                 }
