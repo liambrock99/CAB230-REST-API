@@ -7,6 +7,8 @@ const options = require("./knexfile.js");
 const knex = require("knex")(options);
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
+const helmet = require('helmet');
+
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -26,6 +28,7 @@ app.use((req, res, next) => {
   req.db = knex;
   next();
 });
+app.use(helmet());
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 app.use("/", indexRouter);
