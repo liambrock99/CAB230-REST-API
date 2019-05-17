@@ -9,6 +9,7 @@ const jwtSecretKey = "randomsecretkey";
 
 function verifyJWT(req, res, next) {
   const authHeader = req.headers["authorization"];
+  console.log(authHeader);
 
   if (typeof authHeader !== "undefined") {
     const token = authHeader.split(" ")[1];
@@ -114,13 +115,19 @@ router.post("/login", urlencodedParser, (req, res, next) => {
 });
 
 router.get("/search", verifyJWT, (req, res, next) => {
+  console.log("logged from /search", req.token);
   jwt.verify(req.token, jwtSecretKey, (err, data) => {
     if (err) {
       res.status(401).json({
         message: "oh no! it looks like your authorization token is invalid..."
       });
     } else {
-      res.status(200).json({ data: data });
+      res
+        .status(200)
+        .json({
+          query: { offence: "swag murder" },
+          result: [{ LGA: "sex council", total: 55, lat: -27.47, lng: 153 }]
+        });
     }
   });
 });
