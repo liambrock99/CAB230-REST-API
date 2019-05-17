@@ -13,7 +13,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "https://localhost:443"
     }
   ],
   "basePath": "/api",
@@ -34,23 +34,22 @@
         "tags": ["Authentication"],
         "description": "Register",
         "operationID": "post_register",
-        "produces": "x-www-form-urlencoded",
+        "produces": ["application/json"],
         "requestBody": {
           "required": "true",
           "content": {
-            "x-www-form-urlencoded": {
+            "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
+                "required": ["email", "password"],
                 "properties": {
-                  "username": {
+                  "email": {
                     "type": "string",
-                    "example": "user@email.com",
-                    "required": "true"
+                    "example": "user@email.com"
                   },
                   "password": {
                     "type": "string",
-                    "example": "password123",
-                    "required": "true"
+                    "example": "password123"
                   }
                 }
               }
@@ -102,19 +101,18 @@
         "requestBody": {
           "required": "true",
           "content": {
-            "application/json": {
+            "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
+                "required": ["email", "password"],
                 "properties": {
-                  "username": {
+                  "email": {
                     "type": "string",
-                    "example": "user@email.com",
-                    "required": "true"
+                    "example": "user@email.com"
                   },
                   "password": {
                     "type": "string",
-                    "example": "password123",
-                    "required": "true"
+                    "example": "password123"
                   }
                 }
               }
@@ -170,7 +168,14 @@
         "tags": ["Search"],
         "description": "Login",
         "operationID": "get_search",
-        "produces": "application/json",
+        "produces": ["application/json"],
+        "security": {
+          "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+          }
+        },
         "parameters": [
           {
             "in": "query",

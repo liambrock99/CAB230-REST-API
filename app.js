@@ -8,6 +8,7 @@ const knex = require("knex")(options);
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
 const helmet = require('helmet');
+const cors = require('cors');
 
 
 var indexRouter = require("./routes/index");
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(helmet());
+app.use(cors());
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 app.use("/", indexRouter);
