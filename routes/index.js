@@ -69,7 +69,7 @@ router.post("/register", urlencodedParser, (req, res, next) => {
 /* POST login */
 router.post("/login", urlencodedParser, (req, res, next) => {
   const email = req.body.email;
-  const password = req.body.password;
+  const pwd = req.body.password;
 
   if (email.length === 0 || pwd.length === 0) {
     return res.status(401).json({
@@ -88,7 +88,7 @@ router.post("/login", urlencodedParser, (req, res, next) => {
             "oh no! it looks like there was a database error while creating your user, give it another try..."
         });
       }
-      bcrypt.compare(password, row[0].password, (err, resp) => {
+      bcrypt.compare(pwd, row[0].password, (err, resp) => {
         if (resp) {
           const payload = {
             iss: "localhost:443",

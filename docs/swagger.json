@@ -11,12 +11,30 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
+  "components": {
+    "schemas": {
+      "user": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "name@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "securepassword"
+          }
+        }
+      }
+    }
+  },
   "servers": [
     {
       "url": "https://localhost:443"
     }
   ],
-  "basePath": "/api",
+  "basePath": "/",
   "tags": [
     {
       "name": "Authentication"
@@ -40,18 +58,7 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "type": "object",
-                "required": ["email", "password"],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "user@email.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "password123"
-                  }
-                }
+                "$ref": "#/components/schemas/user"
               }
             }
           }
@@ -103,18 +110,7 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "type": "object",
-                "required": ["email", "password"],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "user@email.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "password123"
-                  }
-                }
+                "$ref": "#/components/schemas/user"
               }
             }
           }
@@ -170,11 +166,7 @@
         "operationID": "get_search",
         "produces": ["application/json"],
         "security": {
-          "bearerAuth": {
-            "type": "http",
-            "scheme": "bearer",
-            "bearerFormat": "JWT"
-          }
+          "Bearer": []
         },
         "parameters": [
           {
