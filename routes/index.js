@@ -63,6 +63,7 @@ router.post("/register", urlencodedParser, (req, res, next) => {
       }
     })
     .catch(err => {
+      console.log(err);
       res.status(500).json({ error: true, message: "Something went wrong." });
     });
 });
@@ -110,27 +111,62 @@ router.post("/login", urlencodedParser, (req, res, next) => {
       });
     })
     .catch(err => {
-      res.json({ error: true, message: err.message });
+      console.log(err);
+      res.status(500).json({ message: "Error in mySQL query" });
     });
 });
 
 router.get("/search", verifyJWT, (req, res, next) => {
-  console.log("logged from /search", req.token);
   jwt.verify(req.token, jwtSecretKey, (err, data) => {
     if (err) {
       res.status(401).json({
         message: "oh no! it looks like your authorization token is invalid..."
       });
     } else {
-      res
-        .status(200)
-        .json({
-          query: { offence: "swag murder" },
-          result: [{ LGA: "sex council", total: 55, lat: -27.47, lng: 153 }]
+      const offence = req.query.offence;
+      if (typeof offence === undefined || offence.length === 0) {
+        return res.status(400).json({
+          message:
+            "oops! it looks like you're missing the offence query parameter"
+        });
+      }
+
+      const area = req.query.area;
+      const age = req.query.age;
+      const gender = req.query.gender;
+      const year = req.query.year;
+      const month = req.query.month;
+      const offence_col = req.query.offence.replace(/[^\w]/g, "").toLowerCase();
+
+      // Modify query if param exists and is valid
+      const withParam = (queryBuilder, param, col_name) => {
+        if (typeof param !== undefined && param.length !== 0) {
+          return queryBuilder.whereIn(col_name, param.split(","));
+        }
+      };
+
+      req
+        .db("offences")
+        .select("area")
+        .sum({ sum: offence_col })
+        .groupBy("area")
+        .modify(withParam, area, "area")
+        .modify(withParam, age, "age")
+        .modify(withParam, gender, "gender")
+        .modify(withParam, year, "year")
+        .modify(withParam, month, "month")
+        .then(rows => {
+          const results = rows.map(e => ({ LGA: e.area, total: e.sum }));
+          res.status(200).json({ query: "", result: results });
+        })
+        .catch(err => {
+          res.status(500).json({ message: "Error in mySQL query" });
         });
     }
   });
 });
+
+/* Helper Routes */
 
 /* GET offences */
 router.get("/offences", (req, res, next) => {
@@ -142,7 +178,7 @@ router.get("/offences", (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.json({ Error: true, Message: "Error in mySQL query" });
+      res.status(500).json({ message: "Error in mySQL query" });
     });
 });
 
@@ -156,7 +192,7 @@ router.get("/areas", (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.json({ Error: true, Message: "Error in mySQL query" });
+      res.status(500).json({ message: "Error in mySQL query" });
     });
 });
 
@@ -170,7 +206,7 @@ router.get("/ages", (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.json({ Error: true, Message: "Error in mySQL query" });
+      res.status(500).json({ message: "Error in mySQL query" });
     });
 });
 
@@ -184,7 +220,7 @@ router.get("/genders", (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.json({ Error: true, Message: "Error in mySQL query" });
+      res.status(500).json({ message: "Error in mySQL query" });
     });
 });
 
@@ -198,7 +234,7 @@ router.get("/years", (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.json({ Error: true, Message: "Error in mySQL query" });
+      res.status(500).json({ message: "Error in mySQL query" });
     });
 });
 
@@ -212,7 +248,7 @@ router.get("/months", (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.json({ Error: true, Message: "Error in mySQL query" });
+      res.status(500).json({ message: "Error in mySQL query" });
     });
 });
 
