@@ -141,25 +141,27 @@ router.get("/search", verifyJWT, (req, res, next) => {
       // Modify query if param exists and is valid
       const withParam = (queryBuilder, param, col_name) => {
         if (typeof param !== undefined && param.length !== 0) {
-          return queryBuilder.whereIn(col_name, param.split(","));
+          return queryBuilder.whereIn(`offences.${col_name}`, param.split(","));
         }
       };
 
       req
         .db("offences")
-        .select("area")
+        .select("offences.area", "areas.lat", "areas.lng")
         .sum({ sum: offence_col })
-        .groupBy("area")
+        .groupBy("offences.area")
+        .leftJoin("areas", "offences.area", "=", "areas.area")
         .modify(withParam, area, "area")
         .modify(withParam, age, "age")
         .modify(withParam, gender, "gender")
         .modify(withParam, year, "year")
         .modify(withParam, month, "month")
         .then(rows => {
-          const results = rows.map(e => ({ LGA: e.area, total: e.sum }));
+          const results = rows.map(e => ({ LGA: e.area, total: e.sum, lat: e.lat, lng: e.lng }));
           res.status(200).json({ query: "", result: results });
         })
         .catch(err => {
+          console.log(err.message);
           res.status(500).json({ message: "Error in mySQL query" });
         });
     }
