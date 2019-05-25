@@ -9,7 +9,11 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./docs/swagger.json');
 const helmet = require('helmet');
 const cors = require('cors');
-
+const corsOptions = {
+  origin: "http://192.168.0.10:3000",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Authorization"]
+}
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -30,7 +34,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 app.use("/", indexRouter);
