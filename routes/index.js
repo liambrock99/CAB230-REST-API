@@ -17,7 +17,7 @@ function verifyJWT(req, res, next) {
     next();
   } else {
     res.status(401).json({
-      message: "oh no! it looks like your authorization token is invalid..."
+      message: "oops! it looks like you're missing the authorization header"
     });
   }
 }
@@ -34,7 +34,7 @@ router.post("/register", urlencodedParser, (req, res, next) => {
 
   if (email.length === 0 || pwd.length === 0) {
     return res.status(400).json({
-      message: "error creating new user - you need to supply both an email and"
+      message: "error creating new user - you need to supply both an email and password"
     });
   }
 
@@ -45,7 +45,7 @@ router.post("/register", urlencodedParser, (req, res, next) => {
       if (rows.length > 0) {
         res
           .status(400)
-          .json({ message: "oops! it looks like that user already exists :(" });
+          .json({ message: "oops! It looks like that user already exists :(" });
       } else {
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(pwd, salt, (err, hash) => {
@@ -55,7 +55,7 @@ router.post("/register", urlencodedParser, (req, res, next) => {
               .then(() => {
                 res.status(201).json({
                   message:
-                    "yay! you've successfully registered your user account"
+                    "yay! you've successfully registered your user account :)"
                 });
               });
           });
@@ -87,7 +87,7 @@ router.post("/login", urlencodedParser, (req, res, next) => {
       if (row.length === 0) {
         return res.status(401).json({
           message:
-            "oh no! it looks like there was a database error while creating your user, give it another try..."
+            "oh no! It looks like that user doesn't exist..."
         });
       }
       bcrypt.compare(pwd, row[0].password, (err, resp) => {
@@ -127,7 +127,7 @@ router.get("/search", verifyJWT, (req, res, next) => {
       if (typeof offence === undefined || offence.length === 0) {
         return res.status(400).json({
           message:
-            "oops! it looks like you're missing the offence query parameter"
+            "oops! it looks like you're missing the offence query parm"
         });
       }
 
