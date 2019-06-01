@@ -18,6 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.16.5",
     "morgan": "~1.9.1",
+    "mysql": "^2.17.1",
+    "swagger-ui-dist": "^3.22.2",
     "swagger-ui-express": "^4.0.2"
   }
 }
