@@ -38,7 +38,7 @@ app.use(cors(corsOptions));
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
