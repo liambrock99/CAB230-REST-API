@@ -34,7 +34,8 @@ router.post("/register", urlencodedParser, (req, res, next) => {
 
   if (email.length === 0 || pwd.length === 0) {
     return res.status(400).json({
-      message: "error creating new user - you need to supply both an email and password"
+      message:
+        "error creating new user - you need to supply both an email and password"
     });
   }
 
@@ -86,8 +87,7 @@ router.post("/login", urlencodedParser, (req, res, next) => {
     .then(row => {
       if (row.length === 0) {
         return res.status(401).json({
-          message:
-            "oh no! It looks like that user doesn't exist..."
+          message: "oh no! It looks like that user doesn't exist..."
         });
       }
       bcrypt.compare(pwd, row[0].password, (err, resp) => {
@@ -126,8 +126,7 @@ router.get("/search", verifyJWT, (req, res, next) => {
       const offence = req.query.offence;
       if (typeof offence === undefined || offence.length === 0) {
         return res.status(400).json({
-          message:
-            "oops! it looks like you're missing the offence query parm"
+          message: "oops! it looks like you're missing the offence query parm"
         });
       }
 
@@ -157,7 +156,12 @@ router.get("/search", verifyJWT, (req, res, next) => {
         .modify(withParam, year, "year")
         .modify(withParam, month, "month")
         .then(rows => {
-          const results = rows.map(e => ({ LGA: e.area, total: e.sum, lat: e.lat, lng: e.lng }));
+          const results = rows.map(e => ({
+            LGA: e.area,
+            total: e.sum,
+            lat: e.lat,
+            lng: e.lng
+          }));
           res.status(200).json({ query: "", result: results });
         })
         .catch(err => {
