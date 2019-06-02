@@ -8,8 +8,8 @@ var app = require('../app');
 var debug = require('debug')('cab230-server-side:server');
 const https = require('https');
 const fs = require('fs');
-const privateKey = fs.readFileSync("./sslcert/cert.key", "utf8");
-const certificate = fs.readFileSync("./sslcert/cert.pem", "utf8");
+const privateKey = fs.readFileSync("./sslcert/cert.key", "utf8"); // Get certificate key
+const certificate = fs.readFileSync("./sslcert/cert.pem", "utf8"); // Get certificate
 const credentials = {
   key: privateKey,
   cert: certificate

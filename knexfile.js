@@ -1,3 +1,6 @@
+/**
+ * Defines database connectivity.
+ */
 module.exports = {
   client: "mysql",
   connection: {
